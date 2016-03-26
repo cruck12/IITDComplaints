@@ -62,6 +62,7 @@ def call():
     """
     return service()
 
+@auth.requires_login()
 @request.restful()
 def api():
     response.view = 'generic.'+request.extension

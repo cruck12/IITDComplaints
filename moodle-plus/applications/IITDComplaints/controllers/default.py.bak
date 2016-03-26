@@ -62,6 +62,7 @@ def call():
     """
     return service()
 
+@auth.requires_login
 @request.restful()
 def api():
     response.view = 'generic.'+request.extension
@@ -85,3 +86,6 @@ def login():
     password = request.vars.password
     user = auth.login_bare(userid,password)
     return dict(success=False if not user else True, user=user)
+
+def api():
+    return

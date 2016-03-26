@@ -92,7 +92,6 @@ from datetime import datetime,timedelta
 
 db.define_table(
     'Hostels',
-    Field('id_hostel', unique =True),
     Field('name', unique = True),
     Field('warden'),
     Field('caretaker'),
@@ -105,11 +104,10 @@ db.define_table(
 
 db.define_table(
     'users',
-    Field('id_user', length=128, default=''),
-    Field('id_hostel',db.Hostels),
+    Field('hostel_id',db.Hostels),
     Field('first_name', length=128),
     Field('username', length=100, unique=True), #cs5110272
-    Field('type','integer'), # 0 for student, 1 for professor
+    Field('type','integer'), # different users have different types
     Field('verified','integer'), #0 for unverified, 1 for verified
     Field('password', 'password', length=512, readable=False, label='Password'),
     Field('registration_key', length=512, writable=False, readable=False, default=''),
@@ -131,26 +129,24 @@ auth.define_tables(username=False)    #Creating the table
 
 db.define_table(
     'Complaints',
-    Field('id_complaint', unique =True),
-    Field('id_user',db.users),
-    Field('id_hostel',db.Hostels),
-    Field('complaintTo',db.users), #may not work
+    Field('user_id',db.users),
+    Field('hostel_id',db.Hostels),
+    Field('complaintTo_id',db.users), #may not work
     Field('name'),
-    Field('type'),
+    Field('Complaint_type'),
     Field('description'),
-    Field('resolved','integer'),
+    Field('resolved','integer',default=0),
     Field('photoPath'),
-    Field('upvote','integer'),
-    Field('downvote','integer'),
+    Field('upvote','integer',default=0),
+    Field('downvote','integer',default=0),
     Field('datePosted','datetime',default=datetime.now),
     Field('dateResolved','datetime'),
 )
 
 db.define_table(
     'Comments',
-    Field('id_comment',unique=True),
-    Field('id_complaint',db.Complaints),
-    Field('id_user',db.users),
+    Field('complaint_id',db.Complaints),
+    Field('user_id',db.users),
     Field('datePosted','datetime',default=datetime.now),
     Field('description'),
 )
