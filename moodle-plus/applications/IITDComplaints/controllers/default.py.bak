@@ -19,12 +19,6 @@ def index():
     response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
 
-def logged_in():
-    return dict(success=auth.is_logged_in(), user=auth.user)
-
-def logout():
-    return dict(success=True, loggedout=auth.logout())
-
 
 def user():
     """
@@ -62,8 +56,4 @@ def call():
     """
     return service()
 
-def login():
-    userid = request.vars.userid
-    password = request.vars.password
-    user = auth.login_bare(userid,password)
-    return dict(success=False if not user else True, user=user)
+
