@@ -107,7 +107,7 @@ db.define_table(
     'users',
     Field('id_user', length=128, default=''),
     Field('id_hostel',db.Hostels),
-    Field('name', length=128),
+    Field('first_name', length=128),
     Field('username', length=100, unique=True), #cs5110272
     Field('type','integer'), # 0 for student, 1 for professor
     Field('verified','integer'), #0 for unverified, 1 for verified
