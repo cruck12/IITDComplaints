@@ -106,7 +106,7 @@ db.define_table(
     'users',
     Field('hostel_id',db.Hostels),
     Field('first_name', length=128),
-    Field('username', length=100, unique=True), #cs5110272
+    Field('username', length=100, unique=True, notnull=True), #cs5110272
     Field('type','integer'), # different users have different types
     Field('verified','integer'), #0 for unverified, 1 for verified
     Field('password', 'password', length=512, readable=False, label='Password'),
@@ -131,7 +131,7 @@ db.define_table(
     'Complaints',
     Field('user_id',db.users),
     Field('hostel_id',db.Hostels),
-    Field('complaintTo_id'), #may not work
+    Field('complaintTo_id',db.users), #may not work
     Field('name'),
     Field('Complaint_type'),
     Field('description'),
