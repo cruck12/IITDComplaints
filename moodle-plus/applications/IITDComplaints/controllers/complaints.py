@@ -55,3 +55,15 @@ def get_resolved():
     complaints=[]
     complaints= db((((db.Complaints.complaintTo_id==id_user)|(db.Complaints.Complaint_type==0)|((db.Complaints.hostel_id==id_hostel)&(db.Complaints.Complaint_type==1)))|(db.Complaints.user_id==id_user))&(db.Complaints.resolved==1)).select()
     return dict(complaints=complaints)
+
+def post_complaint():
+    if not auth.is_logged_in():
+        raise HTTP(404)
+    user_id = request.vars["user_id"]
+    hostel_id = request.vars["hostel_id"]
+    name = request.vars["name"]
+    ComplaintTo_id = request.vars["ComplaintTo_id"]
+    Complaint_type = request.vars["Complaint_type"]
+    description = request.vars["description"]
+    Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=ComplaintTo_id, Complaint_type=Complaint_type, name=name, description=description)
+    return dict(success=False if not Complaint_id else True)
