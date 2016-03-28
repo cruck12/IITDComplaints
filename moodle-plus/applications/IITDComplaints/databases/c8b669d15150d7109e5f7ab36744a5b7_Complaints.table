@@ -150,21 +150,21 @@ sg9
 I00
 sg10
 g11
-ssS'user_id'
+ssS'id_user'
 p49
 (dp50
-g4
-I512
-sg5
-I00
-sg6
-I2
-sg7
+g25
+I3
+sg26
 S'INTEGER REFERENCES users (id) ON DELETE CASCADE'
 p51
-sg9
+sg28
+I512
+sg29
 I00
-sg10
+sg30
+I00
+sg31
 S'reference users'
 p52
 ssS'complaintto'
@@ -200,21 +200,21 @@ I00
 sg10
 S'id'
 p59
-ssS'id_user'
+ssS'user_id'
 p60
 (dp61
-g25
-I3
-sg26
+g4
+I512
+sg5
+I00
+sg6
+I2
+sg7
 S'INTEGER REFERENCES users (id) ON DELETE CASCADE'
 p62
-sg28
-I512
-sg29
+sg9
 I00
-sg30
-I00
-sg31
+sg10
 S'reference users'
 p63
 ssS'name'
