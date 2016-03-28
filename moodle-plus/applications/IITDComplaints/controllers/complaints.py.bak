@@ -74,9 +74,15 @@ def upvote():
     if len(request.args)<1:
 		raise HTTP(404)
     complaint_id = str(request.args[0]).lower
+    user_id = auth.user.id
+    vote = db((db.Votes.complaint_id==complaint_id)&(db.Votes.user_id==user_id)).select()
     complaint = db(db.Complaints.id==complaint_id).select().first()
-    complaint.update_record(upvote=db.Complaints.upvote+1)
-    return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+    if(not vote):
+        db.Votes.validate_and_insert(complaint_id=complaint_id, user_id=user_id)
+        complaint.update_record(upvote=db.Complaints.upvote+1)
+        return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+    else:
+        return dict(success=False, complaint = db(db.Complaints.id==complaint_id).select().first())
 
 def downvote():
     if not auth.is_logged_in():
@@ -84,9 +90,15 @@ def downvote():
     if len(request.args)<1:
 		raise HTTP(404)
     complaint_id = str(request.args[0]).lower
+    user_id = auth.user.id
+    vote = db((db.Votes.complaint_id==complaint_id)&(db.Votes.user_id==user_id)).select()
     complaint = db(db.Complaints.id==complaint_id).select().first()
-    complaint.update_record(downvote=db.Complaints.downvote+1)
-    return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+    if(not vote):
+        db.Votes.validate_and_insert(complaint_id=complaint_id, user_id=user_id)
+        complaint.update_record(downvote=db.Complaints.downvote+1)
+        return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+    else:
+        return dict(success=False, complaint = db(db.Complaints.id==complaint_id).select().first())
 
 def resolve():
     if not auth.is_logged_in():
@@ -100,3 +112,23 @@ def resolve():
         user.update_record(verified=1)
     complaint.update_record(resolved=1)
     return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first(), user=user)
+
+
+def post_comment():
+    if not auth.is_logged_in():
+        raise HTTP(404)
+    if "description" not in request.vars:
+        raise HTTP(404)
+    try:
+        cid = int(request.vars["Complaint_id"])
+    except Exception, e:
+        raise e
+    try:
+        description = str(request.vars["description"]).strip()
+    except Exception, e:
+        raise e
+    if db(db.Complaints.id==cid).count()<1:
+        return dict(success=False, err_msg="Invalid Complaint Id")
+    comment_id = db.Comments.validate_and_insert(complaint_id=cid, user_id=auth.user.id, description=description)
+    comment = db(db.Comments.id==comment_id).select().first()
+    return dict(success=True, comment=comment, user = auth.user)

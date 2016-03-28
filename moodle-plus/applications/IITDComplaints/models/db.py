@@ -150,6 +150,12 @@ db.define_table(
     Field('datePosted','datetime',default=datetime.now),
     Field('description'),
 )
-
+db.define_table(
+    'Votes',
+    Field('complaint_id',db.Complaints),
+    Field('user_id',db.users),
+    Field('datePosted','datetime',default=datetime.now),
+    Field('Voted','integer',default=1),
+)
 ## after defining tables, uncomment below to enable auditing
 auth.enable_record_versioning(db)
