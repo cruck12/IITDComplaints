@@ -97,11 +97,12 @@ def register():
     password = request.vars["password"]
     db.users.validate_and_insert(hostel_id=hostelid, first_name=first_name, username=userid, type=type, verified=verified, password=password)
     user = auth.login_bare(userid,password)
-    user_id = user.id
-    admin = db(db.users.type==0).select().first()
-    admin_id=admin.id
-    db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostelid, complaintTo_id=admin_id, Complaint_type=3, name="Approve Registration", description="Add user")
-    return dict(success=False if not user else True, user=user)
+#    user_id = user.id
+#    admin = db(db.users.type==0).select().first()
+#    admin_id=admin.id
+#    db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostelid, complaintTo_id=admin_id, Complaint_type=3, name="Approve Registration", description="Add user")
+#    return dict(success=False if not user else True, user=user)
+    return dict(user=user, hostel=hostelid, uid = userid)
 
 def api():
     return

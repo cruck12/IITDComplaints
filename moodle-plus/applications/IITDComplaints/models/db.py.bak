@@ -105,7 +105,7 @@ db.define_table(
 db.define_table(
     'users',
     Field('hostel_id',db.Hostels),
-    Field('first_name', length=128),
+    Field('first_name', length=128, notnull=True),
     Field('username', length=100, unique=True, notnull=True), #cs5110272
     Field('type','integer'), # different users have different types
     Field('verified','integer'), #0 for unverified, 1 for verified
@@ -132,7 +132,7 @@ db.define_table(
     Field('user_id',db.users),
     Field('hostel_id',db.Hostels),
     Field('complaintTo_id',db.users), #may not work
-    Field('name'),
+    Field('name',notnull=True),
     Field('Complaint_type'),
     Field('description'),
     Field('resolved','integer',default=0),

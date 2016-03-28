@@ -103,5 +103,6 @@ def register():
     db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostelid, complaintTo_id=admin_id, Complaint_type=3, name="Approve Registration", description="Add user")
     return dict(success=False if not user else True, user=user)
 
+
 def api():
     return

@@ -67,3 +67,36 @@ def post_complaint():
     description = request.vars["description"]
     Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=ComplaintTo_id, Complaint_type=Complaint_type, name=name, description=description)
     return dict(success=False if not Complaint_id else True)
+
+def upvote():
+    if not auth.is_logged_in():
+        raise HTTP(404)
+    if len(request.args)<1:
+		raise HTTP(404)
+    complaint_id = str(request.args[0]).lower
+    complaint = db(db.Complaints.id==complaint_id).select().first()
+    complaint.update_record(upvote=db.Complaints.upvote+1)
+    return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+
+def downvote():
+    if not auth.is_logged_in():
+        raise HTTP(404)
+    if len(request.args)<1:
+		raise HTTP(404)
+    complaint_id = str(request.args[0]).lower
+    complaint = db(db.Complaints.id==complaint_id).select().first()
+    complaint.update_record(downvote=db.Complaints.downvote+1)
+    return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first())
+
+def resolve():
+    if not auth.is_logged_in():
+        raise HTTP(404)
+    if len(request.args)<1:
+		raise HTTP(404)
+    complaint_id = str(request.args[0]).lower
+    complaint = db(db.Complaints.id==complaint_id).select().first()
+    user = db(db.users.id==complaint.user_id).select().first()
+    if complaint.Complaint_type=="3":
+        user.update_record(verified=1)
+    complaint.update_record(resolved=1)
+    return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first(), user=user)
