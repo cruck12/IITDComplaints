@@ -16,7 +16,7 @@ def complaint():
 ##        raise HTTP(404)
     comments = []
 ##    if len(complaint)>0:
-    comments=db(db.Comments.id==id_complaint).select()
+    comments=db(db.Comments.complaint_id==id_complaint).select()
 ##    else:
 ##        raise HTTP(404)
     return dict(complaint=complaint, comments=comments)
