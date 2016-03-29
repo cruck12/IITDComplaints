@@ -69,7 +69,7 @@ def post_complaint():
     if (ComplaintTo_type == 4):
         user = db((db.users.type==ComplaintTo_type)&(db.users.id==prof_id)).select().first()
         Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=user.id, Complaint_type=Complaint_type, name=name, description=description)
-    if (Complaint_type == 1 or ( ComplaintTo_type >= 5 and ComplaintTo_type<=11 )):
+    elif (Complaint_type == 1 or ( ComplaintTo_type >= 5 and ComplaintTo_type<=11 )):
         user = db((db.users.type==ComplaintTo_type)&(db.users.hostel_id==hostel_id)).select().first()
         Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=user.id, Complaint_type=Complaint_type, name=name, description=description)
     else:
