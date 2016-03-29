@@ -50,7 +50,7 @@ p19
 I00
 sS'sortable'
 p20
-I5
+I6
 sS'sql'
 p21
 S'CHAR(512)'
@@ -87,7 +87,7 @@ I512
 sg19
 I00
 sg20
-I4
+I5
 sg21
 S'TIMESTAMP'
 p32
@@ -130,9 +130,25 @@ I00
 sg24
 S'reference users'
 p41
-ssS'id'
+ssS'user_name'
 p42
 (dp43
+g18
+I512
+sg19
+I00
+sg20
+I4
+sg21
+S'CHAR(512)'
+p44
+sg23
+I00
+sg24
+g25
+ssS'id'
+p45
+(dp46
 g18
 I512
 sg19
@@ -141,10 +157,10 @@ sg20
 I1
 sg21
 S'INTEGER PRIMARY KEY AUTOINCREMENT'
-p44
+p47
 sg23
 I00
 sg24
 S'id'
-p45
+p48
 ss.

@@ -147,6 +147,7 @@ db.define_table(
     'Comments',
     Field('complaint_id',db.Complaints),
     Field('user_id',db.users),
+    Field('user_name'),
     Field('datePosted','datetime',default=datetime.now),
     Field('description'),
 )

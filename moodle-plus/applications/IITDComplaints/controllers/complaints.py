@@ -110,7 +110,7 @@ def resolve():
     user = db(db.users.id==complaint.user_id).select().first()
     if complaint.Complaint_type=="3":
         user.update_record(verified=1)
-    complaint.update_record(resolved=1)
+    complaint.update_record(resolved=1, dateResolved=datetime.now)
     return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first(), user=user)
 
 
@@ -129,6 +129,6 @@ def post_comment():
         raise e
     if db(db.Complaints.id==cid).count()<1:
         return dict(success=False, err_msg="Invalid Complaint Id")
-    comment_id = db.Comments.validate_and_insert(complaint_id=cid, user_id=auth.user.id, description=description)
+    comment_id = db.Comments.validate_and_insert(complaint_id=cid, user_id=auth.user.id, user_name=auth.user.first_name, description=description)
     comment = db(db.Comments.id==comment_id).select().first()
     return dict(success=True, comment=comment, user = auth.user)

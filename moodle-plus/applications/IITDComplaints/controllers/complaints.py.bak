@@ -110,7 +110,7 @@ def resolve():
     user = db(db.users.id==complaint.user_id).select().first()
     if complaint.Complaint_type=="3":
         user.update_record(verified=1)
-    complaint.update_record(resolved=1)
+    complaint.update_record(resolved=1, dateResolved=datetime.now)
     return dict(success=False if not complaint else True, complaint = db(db.Complaints.id==complaint_id).select().first(), user=user)
 
 
