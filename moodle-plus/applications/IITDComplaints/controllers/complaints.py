@@ -62,11 +62,16 @@ def post_complaint():
     user_id = request.vars["user_id"]
     hostel_id = request.vars["hostel_id"]
     name = request.vars["name"]
-    ComplaintTo_id = request.vars["ComplaintTo_id"]
+    ComplaintTo_type = request.vars["ComplaintTo_type"]
     Complaint_type = request.vars["Complaint_type"]
     description = request.vars["description"]
-    Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=ComplaintTo_id, Complaint_type=Complaint_type, name=name, description=description)
-    return dict(success=False if not Complaint_id else True)
+    if (Complaint_type == 1 or ( ComplaintTo_type >= 5 and ComplaintTo_type<=11 )):
+        user = db((db.users.type==ComplaintTo_type)&(db.users.hostel_id==hostel_id)).select().first()
+        Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=user.id, Complaint_type=Complaint_type, name=name, description=description)
+    else:
+        user = db(db.users.type==ComplaintTo_type).select().first()
+        Complaint_id = db.Complaints.validate_and_insert(user_id=user_id, hostel_id=hostel_id, complaintTo_id=user.id, Complaint_type=Complaint_type, name=name, description=description)
+    return dict(success=False if not Complaint_id else True, complaint=[] if not Complaint_id else db(db.Complaints.id==Complaint_id).select().first())
 
 def upvote():
     if not auth.is_logged_in():
